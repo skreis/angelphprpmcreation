@@ -1,10 +1,9 @@
 #!/usr/bin/python
 
-
 # This class does the following
 # 1-Create package structure.
-# 2-Copy all required files to BuildRoot area.
-# 3-Write Spec file.
+# 2-Copy all required files to BuildRoot staging area.
+# 3-Write the Spec file.
 # 4-Create RPM.
 
 import os
@@ -15,30 +14,33 @@ from rpm_spec_info import *
 RPMBUILD = "rpmbuild"
 TARGET   = "--target=noarch"
 OPTION   = "-bb"
-BASE_DIR = "/usr/local/angel.com"
 
 
 class CreateRPMPackage:
 
-    def __init__(self , service , majorRev , minorRev , rpmType , buildDir):
+    def __init__(self , service , majorRev , minorRev , rpmType , baseDir , buildDir):
         self.__service       = service
         self.__majorRev      = majorRev
         self.__minorRev      = minorRev
         self.__rpmType       = rpmType
         self.__rpmRoot       = buildDir
-        self.__baseDir       = BASE_DIR
+        self.__baseDir       = ""
         self.__specFile      = ""
-        self.__linkDirName   = ""
-        self.__destDir       = ""
+        self.__srcDir       = ""
         self.__buildRoot     = ""
         self.__specFileName  = ""
 
-        self.setDestDir()
+        self.validateBaseDirectory(baseDir)
+        self.setSrcDir()
         self.setSpecFileName()
         
-
-    def getDestDir(self):
-        return self.__destDirName
+    def validateBaseDirectory(self,baseDir):
+        if os.path.exists(baseDir):
+            print "Base Directory " + baseDir + " exists" 
+            self.setBaseDir(baseDir)
+        else:
+            print "Base Directory " + baseDir + " does not exist. Please provide the valid base directory path" 
+            sys.exit(0)
 
     def setBaseDir(self,baseDir):
         self.__baseDir = baseDir
@@ -46,8 +48,8 @@ class CreateRPMPackage:
     def getBaseDir(self):
         return self.__baseDir
 
-    def setDestDir(self):
-        self.__destDir = self.getBaseDir() + "/builds/" + self.getService() + "-" \
+    def setSrcDir(self):
+        self.__srcDir = self.getBaseDir() + "/builds/" + self.getService() + "-" \
         + self.getRPMType() + "/" + self.getMajorRev()
 
     def setSpecFileName(self):
@@ -56,12 +58,6 @@ class CreateRPMPackage:
 
     def setBuildRoot(self):
         self.__buildRoot = self.__rpmRoot + "/BUILDROOT"
-
-    def getLinkDir(self):
-        return self.__linkDirName
-
-    def setLinkDir(self):
-        self.__linkDir = self.getBaseDir() + "/services" + "-" + self.getService()
 
     def getService(self):
         return self.__service
@@ -85,7 +81,8 @@ class CreateRPMPackage:
         return self.__buildRoot
 
     def createRPMStructure(self):
-        print  "Create RPM Structure.........................................."+"\n"
+
+        print  "Create RPM Structure.........................................."
         rpmDirs = ["BUILD","BUILDROOT","SRPMS","SOURCES","RPMS","SPECS"]
         rpmRoot = self.getRPMRoot()
         for dir in rpmDirs:
@@ -96,11 +93,14 @@ class CreateRPMPackage:
         self.setBuildRoot()
 
     def copyToBuildRoot(self):
-        print "Copy To Build Root (Staging Area).............................." +"\n"
-        print "BuildRoot:"+self.__buildRoot
-        print "DestDir:"+self.__destDir
-        if os.path.exists(self.__destDir):
-            buildsPath  = self.__buildRoot + BASE_DIR + "/builds"
+
+        # @@@ Destinnation directory contains all files , these files are part of the package
+        # If this directory does not exist,then no need to create spec file, just exit from the code 
+          
+        print "Copy To Build Root (Staging Area).............................."
+        print "SrcDir:"+self.__srcDir
+        if os.path.exists(self.__srcDir):
+            buildsPath  = self.__buildRoot + self.__baseDir + "/builds"
             servicePath = buildsPath + "/" +  self.__service + "-" + self.__rpmType
             versionPath = servicePath + "/" + self.__majorRev
 
@@ -112,17 +112,25 @@ class CreateRPMPackage:
                 else:
                     if os.path.exists(os.path.dirname(versionPath)):
                         os.system("mkdir -p " + versionPath)
-                    
-            os.system("cp -rf  " + self.__destDir + "/*  " + versionPath) 
-        else:
-             print "Destination Directory  " +self.__destDir + ": does not exist"
-             sys.exit(0)
 
+            os.system("cp -rf  " + self.__srcDir + "/*  " + versionPath)
+            print "DestDir:" + versionPath
+
+            # We don't want to include '.svn' while creating RPM.
+            command = "find " + versionPath + " -name \*.svn -exec rm -rf {} \;"
+            print "Removing .svn from the directory"
+            print command
+            os.system(command) 
+
+        else:
+            print "Destination Directory  " +self.__srcDir + ": does not exist"
+            sys.exit(0)
 
     def writeSpecFile(self):
+
         print "Writing Spec File.............................................."+"\n"
         self.__createSpecInfoObj = CreateSpecInformation(self.__service,self.__majorRev,\
-                    self.__minorRev,self.__rpmType,self.__baseDir,self.__destDir,self.__rpmRoot,self.__buildRoot)
+        self.__minorRev,self.__rpmType,self.__baseDir,self.__srcDir,self.__rpmRoot,self.__buildRoot)
 
         self.__specFile = self.getRPMRoot() + "/SPECS/" + self.getSpecFileName() + ".spec" 
 
@@ -142,7 +150,6 @@ class CreateRPMPackage:
         fp.write(self.__createSpecInfoObj.getFileSection())
 
         fp.close()
-
 
     def createRPM(self):
         self.createRPMStructure()

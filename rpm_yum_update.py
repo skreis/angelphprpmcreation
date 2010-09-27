@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 # @@@ Update Yum repsitory  
+# To update yum repository file /etc/yum.repos.d should be configured.
 
 import os
 
@@ -28,7 +29,7 @@ class UpdateYumRepository:
 
     def cleanYumRepository(self):
         print "Executing Yum clean command.........................................."
-        #  Run this command to ensure that, nothing unnecessary space used.
+        #  Run this command to   ensure that, nothing unnecessary space used.
         os.system("yum clean all")
 
     def yumList(self):
