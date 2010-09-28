@@ -1,2 +1,2 @@
 #!/bin/bash
-rpmbuild -bb rpm-jboss/SPECS/angel_jboss.spec 
+rpmbuild -bb SPECS/angel_php_base.spec 
