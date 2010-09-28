@@ -1,5 +1,4 @@
 %define base_dir /usr/local/angel.com
-%define config_dest_dir /usr/local/angel.com/builds/call-server/1
 Name: angel_ps_php_base
 Version: 105
 Release: 105
@@ -15,7 +14,6 @@ Requires: libframework1-zend-server
 autoprov: yes
 autoreq: yes
 Prefix: /usr/local
-BuildRoot: buildroot
 %description
 Base of php
 
