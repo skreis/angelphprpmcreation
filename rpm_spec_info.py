@@ -6,10 +6,10 @@ from rpm_header import *
 
 class CreateSpecInformation:
     def __init__(self , service , majorRevision , minorRevision , rpmType , \
-                  baseDir ,destDir , buildDir , buildRoot):
+                  baseDir ,sourceDir , buildDir , buildRoot , configFileList):
         self.__baseDir          = baseDir
         self.__buildDir         = buildDir
-        self.__destDir          = destDir
+        self.__sourceDir        = sourceDir
         self.__buildRoot        = buildRoot
         self.__version          = minorRevision
         self.__release          = minorRevision
@@ -22,7 +22,6 @@ class CreateSpecInformation:
         self.__prefix           = PREFIX
         self.__description      = DESCRIPTION
         self.__preambleSection  = ""
-        self.__includeDir       = destDir   
         self.__postScript       = ""
         self.__preScript        = ""
         self.__installSection   = ""
@@ -36,7 +35,7 @@ class CreateSpecInformation:
         self.__service          = service
         self.__majorRev         = majorRevision
         self.__rpmType          = rpmType
-
+        self.__configFileList   = configFileList
         self.setPreambleSection()
         self.setDescription()
         self.setPrepSection()
@@ -57,7 +56,7 @@ class CreateSpecInformation:
 
     def setPreambleSection(self):
         self.__preambleSection = "%define base_dir  " + self.__baseDir + "\n"  \
-        + "%define config_dest_dir  " + self.__destDir + "\n" \
+        + "%define config_dest_dir  " + self.__sourceDir + "\n" \
         + "%define _rpmdir  " + self.__buildDir + "/RPMS" + "\n" \
         + "%define BuildRoot  " + self.__buildRoot + "\n" \
         + "Name:" + self.getPackageName() + "\n" \
@@ -84,10 +83,10 @@ class CreateSpecInformation:
         post_install_script = """ if ["$1" = "1"]; then """ + "\n" + "   " \
         + "/usr/sbin/alternatives --install " + self.__baseDir + "/services/" \
         + self.__service + "/" + self.__rpmType + " " + "angel-" + self.__service \
-        + "-" + self.__rpmType + "  " + "%" + "(" + self.__destDir + ")" + "\n" \
+        + "-" + self.__rpmType + "  " + "%" + "(" + self.__sourceDir + ")" + "\n" \
         + "  " + " echo /usr/sbin/alternatives --install  " + self.__baseDir + \
         "/services/" + self.__service + "/" + self.__rpmType + "  " + "angel-" \
-        + self.__service + "-" + self.__rpmType + "  " + self.__destDir + "\n" \
+        + self.__service + "-" + self.__rpmType + "  " + self.__sourceDir + "\n" \
         + " " + "fi"
         if post_install_script != "":
             self.__postScript = "%post" + "\n" + post_install_script + "\n" + "\n"
@@ -99,9 +98,9 @@ class CreateSpecInformation:
     def setPreScript(self):
         pre_uninstall_script = """ if ["$1" = "0"]; then """ + "\n" + "   " \
         +  "/usr/sbin/alternatives --remove " + "angel-" + self.__service + "-" \
-        + self.__rpmType + "  " + "%" + "(" + self.__destDir + ")" + "\n" + "  " \
+        + self.__rpmType + "  " + "%" + "(" + self.__sourceDir + ")" + "\n" + "  " \
         + "echo /usr/sbin/alternatives --remove angel-" + self.__service + "-" \
-        + self.__rpmType + "  "+self.__destDir + "\n" + " " + "fi"
+        + self.__rpmType + "  "+self.__sourceDir + "\n" + " " + "fi"
 
         if pre_uninstall_script != "":
             self.__preScript = "%preun" + "\n" + pre_uninstall_script + "\n" + "\n"
@@ -145,8 +144,11 @@ class CreateSpecInformation:
         return self.__cleanScript
 
     def setFileSection(self):
-        self.__fileSection  = "%files" + "\n" + "%dir" + "  " + self.__includeDir + "\n" 
-
+        self.__fileSection  = "%files" + "\n" + "%dir" + "  " + self.__sourceDir + "\n" 
+        for configFile in self.__configFileList:
+            self.__fileSection = self.__fileSection + "%config(noreplace) " \
+            + self.__sourceDir + "/" +  configFile + "\n"
+        
     def getFileSection(self):
         return self.__fileSection
 

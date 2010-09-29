@@ -2,7 +2,8 @@
 
 #@@ This file defines constant values used in module.
 
-
+BASE_DIR      = "/usr/local/angel.com/psphp"
+BUILD_DIR     = "/tmp/angel"
 
 
 
