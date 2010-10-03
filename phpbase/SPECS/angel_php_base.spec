@@ -18,7 +18,7 @@ Prefix: /usr/local
 %define psrunner_uid    1006
 %define psrunner_user   psrunner
 %define psrunner_gid    1006
-%define psrunner_group  psunixunsers
+%define psrunner_group  psunixusers
 %define psrunner_home /usr/local/angel.com/psphpconfig
 
 
