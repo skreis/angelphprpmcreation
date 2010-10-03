@@ -87,9 +87,10 @@ class CreateRPMPackage:
     def createRPMStructure(self):
 
         print  "Create RPM Structure.........................................."
-		print   "Cleaning out existing directories"
-		rpmRoot = self.getRPMRoot()
-		os.system = ("rm -rf " + rpmRoot)
+	print   "Cleaning out existing directories"
+	rpmRoot = self.getRPMRoot()
+        rmCommand = "rm -rf " + rpmRoot
+	os.system(rmCommand)
         rpmDirs = ["BUILD","BUILDROOT","SRPMS","SOURCES","RPMS","SPECS"]
         rpmRoot = self.getRPMRoot()
         for dir in rpmDirs:
