@@ -141,9 +141,9 @@ class CreateSpecInformation:
         return self.__cleanScript
 
     def setFileSection(self):
-		fileSectionPreamble = """
+	fileSectionPreamble = """
 %files
-%defattr(644,psrunner,psrunner,755)		
+%defattr(644,psrunner,psunixusers,755)		
 """
         self.__fileSection = fileSectionPreamble  
 	
