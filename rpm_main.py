@@ -61,7 +61,7 @@ if __name__ == '__main__':
 
         if os.path.exists(options.input_path): 
             rpm = CreateRPMPackage(options.service_name , options.major_version_number , options.minor_version_number,\
-                               options.rpm_type , options.input_path )
+                                   options.rpm_type , options.input_path )
             rpm.createRPM()
             rpmRoot = BUILD_DIR
             rpmRoot = rpmRoot.rstrip("/")
@@ -70,8 +70,8 @@ if __name__ == '__main__':
             if options.local_repo != "":
                 UpdateYumRepository(RPMPath,options.local_repo)
         else:
-              print "Service Directory  " + options.service_name  + " doesn't exist "
-              sys.exit(0)
+            print "Service Directory  " + options.service_name  + " doesn't exist "
+            sys.exit(0)
 
     else:
 
