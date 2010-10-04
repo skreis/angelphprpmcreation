@@ -59,10 +59,9 @@ if __name__ == '__main__':
     if(options.service_name!="" and options.major_version_number !="" and options.input_path !=""  \
         and options.minor_version_number and options.rpm_type ):
 
-        serviceDirPath = options.input_path.rstrip("/") + "/" + options.service_name
-        if os.path.exists(serviceDirPath): 
+        if os.path.exists(options.input_path): 
             rpm = CreateRPMPackage(options.service_name , options.major_version_number , options.minor_version_number,\
-                               options.rpm_type , serviceDirPath )
+                               options.rpm_type , options.input_path )
             rpm.createRPM()
             rpmRoot = BUILD_DIR
             rpmRoot = rpmRoot.rstrip("/")

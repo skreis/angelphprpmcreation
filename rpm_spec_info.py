@@ -6,7 +6,7 @@ from rpm_header import *
 
 class CreateSpecInformation:
     def __init__(self , service , majorRevision , minorRevision , rpmType , \
-                  baseDir ,sourceDir , buildDir , buildRoot , configFileList):
+                  baseDir , buildRoot , buildDir , sourceDir , configFileList , fileList):
         self.__baseDir          = baseDir
         self.__buildDir         = buildDir
         self.__sourceDir        = sourceDir
@@ -29,6 +29,7 @@ class CreateSpecInformation:
         self.__buildSection     = ""
         self.__verifyScript     = ""
         self.__cleanScript      = ""
+        self.__postUnScript     = ""
         self.__fileSection      = ""
         self.__defAttribute     = DEFATTR
         self.__docsDirective    = DOCS
@@ -36,12 +37,14 @@ class CreateSpecInformation:
         self.__majorRev         = majorRevision
         self.__rpmType          = rpmType
         self.__configFileList   = configFileList
+        self.__fileList         = fileList
         self.setPreambleSection()
         self.setDescription()
         self.setPrepSection()
         self.setBuildSection()
         self.setInstallSection()
         self.setPostScript()
+        self.setPostUnScript()
         self.setPreScript()
         self.setVerifyScript()
         self.setCleanScript()
@@ -56,9 +59,8 @@ class CreateSpecInformation:
 
     def setPreambleSection(self):
         self.__preambleSection = "%define base_dir  " + self.__baseDir + "\n"  \
-        + "%define config_dest_dir  " + self.__sourceDir + "\n" \
+        + "%define config_dest_directory  " + self.__sourceDir + "\n" \
         + "%define _rpmdir  " + self.__buildDir + "/RPMS" + "\n" \
-        + "%define BuildRoot  " + self.__buildRoot + "\n" \
         + "Name:" + self.getPackageName() + "\n" \
         + "Version:" + self.__version + "\n" \
         + "Release:" + self.__release + "\n" \
@@ -105,6 +107,10 @@ class CreateSpecInformation:
         if pre_uninstall_script != "":
             self.__preScript = "%preun" + "\n" + pre_uninstall_script + "\n" + "\n"
 
+    def setPostUnScript(self):
+        self.__postUnScript = "%postun" + "\n" + " rm -rf " + self.__baseDir + "/" \
+        + self.__service + "\n\n"
+
     def getPreScript(self):
         return self.__preScript
             
@@ -117,7 +123,7 @@ class CreateSpecInformation:
 
     def setPrepSection(self):
         if prep_actions != "":
-            self.__prepSection = "%prep" + "\n" + prep_actions + "\n" + "\n"
+            self.__prepSection = "%prep" + "\n" + prep_actions  + "\n" + "\n"
 
     def getPrepSection(self):
         return self.__prepSection
@@ -144,11 +150,17 @@ class CreateSpecInformation:
         return self.__cleanScript
 
     def setFileSection(self):
-        self.__fileSection  = "%files" + "\n" + "%dir" + "  " + self.__sourceDir + "\n" 
+        self.__fileSection = "%files" + "\n"  
+        for file in self.__fileList:
+            strlen = len(self.__buildRoot)
+            self.__fileSection = self.__fileSection +  file[strlen:]+ "\n"
         for configFile in self.__configFileList:
             self.__fileSection = self.__fileSection + "%config(noreplace) " \
             + self.__sourceDir + "/" +  configFile + "\n"
         
     def getFileSection(self):
         return self.__fileSection
+
+    def getPostUnScript(self):
+        return self.__postUnScript
 
