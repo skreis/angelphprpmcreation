@@ -61,7 +61,7 @@ class CreateRPMPackage:
         + "-" + self.getMajorRev()
 
     def setBuildRoot(self):
-        self.__buildRoot = self.__rpmRoot + "/BUILDROOT"
+        self.__buildRoot = self.getRPMRoot() + "/BUILDROOT"
 
     def getService(self):
         return self.__service
@@ -79,7 +79,7 @@ class CreateRPMPackage:
         return self.__specFileName
 
     def getRPMRoot(self):
-        return self.__rpmRoot
+        return self.__rpmRoot + "/" + self.getService()
 
     def getBuildRoot(self):
         return self.__buildRoot
@@ -87,6 +87,9 @@ class CreateRPMPackage:
     def createRPMStructure(self):
 
         print  "Create RPM Structure.........................................."
+		print   "Cleaning out existing directories"
+		rpmRoot = self.getRPMRoot()
+		os.system = ("rm -rf " + rpmRoot)
         rpmDirs = ["BUILD","BUILDROOT","SRPMS","SOURCES","RPMS","SPECS"]
         rpmRoot = self.getRPMRoot()
         for dir in rpmDirs:
