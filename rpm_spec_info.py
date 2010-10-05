@@ -82,15 +82,9 @@ class CreateSpecInformation:
         return self.__preambleSection
 
     def setPostScript(self):
-        post_install_script = """ if ["$1" = "1"]; then """ + "\n" + "   " \
-        + "/usr/sbin/alternatives --install " + self.__baseDir + "/services/" \
-        + self.__service + "/" + self.__rpmType + " " + "angel-" + self.__service \
-        + "-" + self.__rpmType + "  " + "%" + "(" + self.__sourceDir + ")" + "\n" \
-        + "  " + " echo /usr/sbin/alternatives --install  " + self.__baseDir + \
-        "/services/" + self.__service + "/" + self.__rpmType + "  " + "angel-" \
-        + self.__service + "-" + self.__rpmType + "  " + self.__sourceDir + "\n" \
-        + " " + "fi"
-        if post_install_script != "":
+        if  POST_INSTALL_SCRIPT != "":
+            post_install_script = """ if ["$1" = "1"]; then """ + "\n" \
+            + "   " + POST_INSTALL_SCRIPT + "\n" + " fi"
             self.__postScript = "%post" + "\n" + post_install_script + "\n" + "\n"
 
     def getPostScript(self):
@@ -98,13 +92,10 @@ class CreateSpecInformation:
         
 
     def setPreScript(self):
-        pre_uninstall_script = """ if ["$1" = "0"]; then """ + "\n" + "   " \
-        +  "/usr/sbin/alternatives --remove " + "angel-" + self.__service + "-" \
-        + self.__rpmType + "  " + "%" + "(" + self.__sourceDir + ")" + "\n" + "  " \
-        + "echo /usr/sbin/alternatives --remove angel-" + self.__service + "-" \
-        + self.__rpmType + "  "+self.__sourceDir + "\n" + " " + "fi"
+        if  PRE_UNINSTALL_SCRIPT != "":
+            pre_uninstall_script = """ if ["$1" = "0"]; then """ + "\n" \
+            + "   " + PRE_UNINSTALL_SCRIPT + "\n" + " fi" 
 
-        if pre_uninstall_script != "":
             self.__preScript = "%preun" + "\n" + pre_uninstall_script + "\n" + "\n"
 
     def setPostUnScript(self):
@@ -115,36 +106,36 @@ class CreateSpecInformation:
         return self.__preScript
             
     def setInstallSection(self):
-        if install_cmd != "":
-            self.__installSection = "%install" + "\n" + install_cmd + "\n" + "\n" 
+        if INSTALL_CMD != "":
+            self.__installSection = "%install" + "\n" + INSTALL_CMD + "\n" + "\n" 
 
     def getInstallSection(self):
         return self.__installSection
 
     def setPrepSection(self):
-        if prep_actions != "":
-            self.__prepSection = "%prep" + "\n" + prep_actions  + "\n" + "\n"
+        if PREP_ACTIONS != "":
+            self.__prepSection = "%prep" + "\n" + PREP_ACTIONS  + "\n" + "\n"
 
     def getPrepSection(self):
         return self.__prepSection
 
     def setBuildSection(self):
-        if build_cmd != "":
-            self.__buildSection = "%build" + "\n" + build_cmd + "\n" + "\n"
+        if BUILD_CMD != "":
+            self.__buildSection = "%build" + "\n" + BUILD_CMD + "\n" + "\n"
 
     def getBuildSection(self):
         return self.__buildSection
 
     def setVerifyScript(self):
-        if verify_script != "":
-            self.__verifyScript = "%verify" + "\n" + verify_script + "\n" + "\n"
+        if VERIFY_SCRIPT != "":
+            self.__verifyScript = "%verify" + "\n" + VERIFY_SCRIPT + "\n" + "\n"
 
     def getVerifyScript(self):
         return self.__verifyScript
 
     def setCleanScript(self):
-        if clean_script != "":
-            self.__cleanScript = "%clean" + "\n" + clean_script + "\n" + "\n"
+        if CLEAN_SCRIPT != "":
+            self.__cleanScript = "%clean" + "\n" + CLEAN_SCRIPT + "\n" + "\n"
 
     def getCleanScript(self):
         return self.__cleanScript

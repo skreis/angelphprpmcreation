@@ -20,9 +20,13 @@ ATTR          = ""
 DOCS	      = ""
 
 
-build_cmd     = ""
-install_cmd   = ""
-prep_actions  = ""
-verify_script = ""
-clean_script  = "rm -rf $RPM_BUILD_ROOT"
+PRE_UNINSTALL_SCRIPT = ""
+POST_INSTALL_SCRIPT  = ""
+BUILD_CMD     = ""
+INSTALL_CMD   = ""
+PREP_ACTIONS  = ""
+VERIFY_SCRIPT = ""
+CLEAN_SCRIPT  = ""
+
+
 
