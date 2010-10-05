@@ -1,7 +1,7 @@
 %define base_dir /usr/local/angel.com
 Name: angel_ps_php_base
 Version: 2
-Release: 1
+Release: 3
 Summary: Angel Pro Service PHP Base
 License: 2010, Angel.com
 Distribution: Angel System Config
@@ -27,7 +27,7 @@ Base of php
 
 
 %files
-%defattr(644,psrunner,psrunner,755)
+%defattr(644,psrunner,psunixusers,755)
 %dir  /usr/local/angel.com/psphp
 %dir  /usr/local/angel.com/psphpconfig
 %dir /var/log/angel
