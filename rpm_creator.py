@@ -91,7 +91,6 @@ class CreateRPMPackage:
 		rpmRoot = self.getRPMRoot()
 		os.system = ("rm -rf " + rpmRoot)
         rpmDirs = ["BUILD","BUILDROOT","SRPMS","SOURCES","RPMS","SPECS"]
-        rpmRoot = self.getRPMRoot()
         for dir in rpmDirs:
             command = "mkdir -p " + rpmRoot + "/" + dir 
             os.system(command)
