@@ -31,21 +31,21 @@ class CreateRPMPackage:
         self.__buildRoot     = ""
         self.__specFileName  = ""
         self.__configFileList= []
-        self.__buildRootServicePath =""
+        self.__buildRootServicePath = ""
+        self.__buildRootConfPath = ""
         self.__fileList = []
 
         self.validateBaseDirectory(BASE_DIR)
         self.setSrcDir()
+        self.setConfDir(CONF_DIR)
         self.setSpecFileName()
         
     def validateBaseDirectory(self,baseDir):
         baseDir = baseDir.rstrip("/")
-        if os.path.exists(baseDir):
-            print "Base Directory " + baseDir + " exists" 
-            self.setBaseDir(baseDir)
-        else:
-            print "Base Directory " + baseDir + " does not exist. Please provide the valid base directory path" 
-            sys.exit(0)
+        if not os.path.exists(baseDir):
+            print "Base Directory " + baseDir + " does not exist. Creating the base directory" 
+            os.system("mkdir -p "+ baseDir)
+        self.setBaseDir(baseDir)
 
     def setBaseDir(self,baseDir):
         self.__baseDir = baseDir
@@ -55,6 +55,16 @@ class CreateRPMPackage:
 
     def setSrcDir(self):
         self.__srcDir = self.getBaseDir() +"/"+ self.getService() 
+
+    def setConfDir(self,confDir):
+        confDir = confDir.rstrip("/")+ "/" +  self.getService()
+        if not  os.path.exists(confDir):
+            print "Conf Directory " + confDir + " does not exist. Creating the Conf directory" 
+            os.system("mkdir -p "+ confDir)
+        self.__confDir = confDir
+
+    def getConfDir(self):
+        return self.__confDir
 
     def setSpecFileName(self):
         self.__specFileName = "angel-"+ self.getService() + "-" + self.getRPMType()\
@@ -85,7 +95,6 @@ class CreateRPMPackage:
         return self.__buildRoot
 
     def createRPMStructure(self):
-
         print  "Create RPM Structure.........................................."
         rpmDirs = ["BUILD","BUILDROOT","SRPMS","SOURCES","RPMS","SPECS"]
         rpmRoot = self.getRPMRoot()
@@ -97,11 +106,13 @@ class CreateRPMPackage:
         self.setBuildRoot()
 
     def copyToBuildRoot(self):
-
         # @@@ Destinnation directory contains all files , these files are part of the package
         # If this directory does not exist,then no need to create spec file, just exit from the code 
         basePath  = self.__buildRoot + self.__baseDir
-        self.__buildRootServicePath = basePath + "/" +  self.__service  
+        self.__buildRootServicePath = basePath + "/" +  self.__service
+        self.__buildRootConfPath    = self.__buildRoot + self.getConfDir()
+        if not os.path.exists(os.path.dirname(self.__buildRootConfPath)):
+            os.system("mkdir -p " + self.__buildRootConfPath)    
         if not os.path.exists(os.path.dirname(basePath)):
             os.system("mkdir -p  " + self.__buildRootServicePath)
         else:
@@ -111,7 +122,7 @@ class CreateRPMPackage:
         print "Copy sources from "+self.__serviceDirPath +" to "+self.__buildRootServicePath 
         os.system("cp -rf   " + self.__serviceDirPath + "/*  " + self.__buildRootServicePath) 
         self.getConfigFileList(self.__buildRootServicePath)
-        os.system("cp -rf " + self.__buildRootServicePath  + "/conf/*  "   + self.__buildRootServicePath)
+        os.system("cp -rf " + self.__buildRootServicePath  + "/conf/*  "   + self.__buildRootConfPath)
         os.system("rm -rf " + self.__buildRootServicePath+"/conf")
 
         # We don't want to include '.svn' while creating RPM.
@@ -120,13 +131,12 @@ class CreateRPMPackage:
         print command
         os.system(command) 
 
-
     def writeSpecFile(self):
         print "Writing Spec File.............................................."+"\n"
         self.getListOfFilesInService(self.__buildRootServicePath)
         self.__createSpecInfoObj = CreateSpecInformation(self.__service,self.__majorRev,\
         self.__minorRev,self.__rpmType,self.__baseDir,self.__buildRoot,\
-        self.__rpmRoot,self.__srcDir, self.__configFileList , self.__fileList)
+        self.__rpmRoot,self.__srcDir,self.__confDir, self.__configFileList , self.__fileList)
 
         self.__specFile = self.getRPMRoot() + "/SPECS/" + self.getSpecFileName() + ".spec" 
 

@@ -6,10 +6,11 @@ from rpm_header import *
 
 class CreateSpecInformation:
     def __init__(self , service , majorRevision , minorRevision , rpmType , \
-                  baseDir , buildRoot , buildDir , sourceDir , configFileList , fileList):
+                  baseDir , buildRoot , buildDir , sourceDir , confDir , configFileList , fileList):
         self.__baseDir          = baseDir
         self.__buildDir         = buildDir
         self.__sourceDir        = sourceDir
+        self.__confDir          = confDir
         self.__buildRoot        = buildRoot
         self.__version          = minorRevision
         self.__release          = minorRevision
@@ -100,7 +101,8 @@ class CreateSpecInformation:
 
     def setPostUnScript(self):
         self.__postUnScript = "%postun" + "\n" + " rm -rf " + self.__baseDir + "/" \
-        + self.__service + "\n\n"
+        + self.__service + "\n" \
+        + " rm -rf " + self.__confDir + "\n\n"
 
     def getPreScript(self):
         return self.__preScript
@@ -147,7 +149,7 @@ class CreateSpecInformation:
             self.__fileSection = self.__fileSection +  file[strlen:]+ "\n"
         for configFile in self.__configFileList:
             self.__fileSection = self.__fileSection + "%config(noreplace) " \
-            + self.__sourceDir + "/" +  configFile + "\n"
+            + self.__confDir + "/" +  configFile + "\n"
         
     def getFileSection(self):
         return self.__fileSection
