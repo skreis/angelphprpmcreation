@@ -1,9 +1,11 @@
 #!/usr/bin/python
 
 #@@ This file defines constant values used in module.
+#@@ Remove buildroot assign clean script = "rm -rf $RPM_BUILD_ROOT
 
 BASE_DIR      = "/usr/local/angel.com/psphp"
 BUILD_DIR     = "/tmp/angel"
+CONF_DIR      = "/usr/local/angel.com/psphpconf"   
 
 
 
