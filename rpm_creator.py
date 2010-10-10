@@ -35,7 +35,8 @@ class CreateRPMPackage:
         self.__buildRootConfPath = ""
         self.__fileList = []
 
-        self.validateBaseDirectory(BASE_DIR)
+	self.__buildRoot = self.getRPMRoot() + "/BUILDROOT"
+        self.validateBaseDirectory(BASE_DIR + service)
         self.setSrcDir()
         self.setConfDir(CONF_DIR)
         self.setSpecFileName()
