@@ -63,7 +63,7 @@ if __name__ == '__main__':
             rpm = CreateRPMPackage(options.service_name , options.major_version_number , options.minor_version_number,\
                                    options.rpm_type , options.input_path )
             rpm.createRPM()
-            rpmRoot = BUILD_DIR
+            rpmRoot = rpm.getRPMRoot()
             rpmRoot = rpmRoot.rstrip("/")
             RPMPath = rpmRoot + "/RPMS/noarch"
 
