@@ -1,7 +1,7 @@
 %define base_dir /usr/local/angel.com
 Name: angel_ps_php_base
 Version: 2
-Release: 3
+Release: 6
 Summary: Angel Pro Service PHP Base
 License: 2010, Angel.com
 Distribution: Angel System Config
@@ -16,10 +16,10 @@ autoreq: yes
 Prefix: /usr/local
 
 %define psrunner_uid    1006
-%define psrunner_user   psrunner
+%define psrunner_user   psuser
 %define psrunner_gid    1006
 %define psrunner_group  psunixusers
-%define psrunner_home /usr/local/angel.com/psphpconfig
+%define psrunner_home /home/psuser
 
 
 %description
