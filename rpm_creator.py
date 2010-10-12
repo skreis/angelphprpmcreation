@@ -95,6 +95,9 @@ class CreateRPMPackage:
 
     def getBuildRoot(self):
         return self.__buildRoot
+    
+    def getBasePath(self):
+        retun self.__buildRoot + self.__baseDir
 
     def getLogPath(self):
 	return "/var/log/angel/" + self.__service
@@ -116,7 +119,7 @@ class CreateRPMPackage:
     def copyToBuildRoot(self):
         # @@@ Destinnation directory contains all files , these files are part of the package
         # If this directory does not exist,then no need to create spec file, just exit from the code 
-        basePath  = self.__buildRoot + self.__baseDir
+        basePath  = self.getBasePath()
         self.__buildRootServicePath = basePath + "/" +  self.__service
         self.__buildRootConfPath    = self.__buildRoot + self.getConfDir()
 
@@ -145,7 +148,7 @@ class CreateRPMPackage:
 
     def writeSpecFile(self):
         print "Writing Spec File.............................................."+"\n"
-        self.getListOfFilesInService(self.__buildRootServicePath)
+        self.getListOfFilesInService(self.getBasePath())
         self.__createSpecInfoObj = CreateSpecInformation(self.__service,self.__majorRev,\
         self.__minorRev,self.__rpmType,self.__baseDir,self.__buildRoot,\
         self.getRPMRoot(),self.__srcDir,self.__confDir, self.__configFileList , self.__fileList, self.__dirList)
