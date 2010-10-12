@@ -96,8 +96,8 @@ class CreateRPMPackage:
     def getBuildRoot(self):
         return self.__buildRoot
 
-	def getLogPath(self):
-		return "/var/log/angel/" + service
+    def getLogPath(self):
+	return "/var/log/angel/" + self.__service
 
     def createRPMStructure(self):
         print  "Create RPM Structure.........................................."
