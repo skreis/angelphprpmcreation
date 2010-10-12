@@ -97,7 +97,7 @@ class CreateRPMPackage:
         return self.__buildRoot
     
     def getBasePath(self):
-        retun self.__buildRoot + self.__baseDir
+        return self.__buildRoot + self.__baseDir
 
     def getLogPath(self):
 	return "/var/log/angel/csphp-" + self.__service
@@ -148,7 +148,7 @@ class CreateRPMPackage:
 
     def writeSpecFile(self):
         print "Writing Spec File.............................................."+"\n"
-        self.getListOfFilesInService(self.getBasePath())
+        self.getListOfFilesInService(self.__buildRoot)
         self.__createSpecInfoObj = CreateSpecInformation(self.__service,self.__majorRev,\
         self.__minorRev,self.__rpmType,self.__baseDir,self.__buildRoot,\
         self.getRPMRoot(),self.__srcDir,self.__confDir, self.__configFileList , self.__fileList, self.__dirList)
@@ -196,6 +196,7 @@ class CreateRPMPackage:
                 self.__configFileList.append(file)
 
     def getListOfFilesInService(self,buildRootServicePath):
+        print "Getting list of files in:" + buildRootServicePath
         for (path,dir,files)in os.walk(buildRootServicePath):
              self.__dirList.append(path)
              for file in files:
