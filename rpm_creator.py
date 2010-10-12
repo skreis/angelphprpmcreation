@@ -95,6 +95,9 @@ class CreateRPMPackage:
     def getBuildRoot(self):
         return self.__buildRoot
 
+	def getLogPath(self):
+		return "/var/log/angel/" + service
+
     def createRPMStructure(self):
         print  "Create RPM Structure.........................................."
 	print   "Cleaning out existing directories"
@@ -115,6 +118,7 @@ class CreateRPMPackage:
         basePath  = self.__buildRoot + self.__baseDir
         self.__buildRootServicePath = basePath + "/" +  self.__service
         self.__buildRootConfPath    = self.__buildRoot + self.getConfDir()
+
         if not os.path.exists(os.path.dirname(self.__buildRootConfPath)):
             os.system("mkdir -p " + self.__buildRootConfPath)    
         if not os.path.exists(os.path.dirname(basePath)):
@@ -122,6 +126,9 @@ class CreateRPMPackage:
         else:
             if not os.path.exists(os.path.dirname(self.__buildRootServicePath)):
                 os.system("mkdir -p  " + self.__buildRootServicePath)
+
+		#makes log directory
+		#os.system("mkdir -p " +  self.__buildRoot + self.getLogPath())
 
         print "Copy sources from "+self.__serviceDirPath +" to "+self.__buildRootServicePath 
         os.system("cp -rf   " + self.__serviceDirPath + "/*  " + self.__buildRootServicePath) 

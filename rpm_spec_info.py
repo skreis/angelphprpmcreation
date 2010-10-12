@@ -100,9 +100,10 @@ class CreateSpecInformation:
             self.__preScript = "%preun" + "\n" + pre_uninstall_script + "\n" + "\n"
 
     def setPostUnScript(self):
-        self.__postUnScript = "%postun" + "\n" + " rm -rf " + self.__baseDir + "/" \
-        + self.__service + "\n" \
-        + " rm -rf " + self.__confDir + "\n\n"
+
+#        self.__postUnScript = "%postun" + "\n" + " rm -rf " + self.__baseDir + "/" \
+#        + self.__service + "\n" \
+#        + " rm -rf " + self.__confDir + "\n\n"
 
     def getPreScript(self):
         return self.__preScript
