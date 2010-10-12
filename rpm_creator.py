@@ -95,8 +95,8 @@ class CreateRPMPackage:
     def getBuildRoot(self):
         return self.__buildRoot
 
-	def getLogPath(self):
-		return "/var/log/angel/" + service
+    def getLogPath(self):
+	return "/var/log/angel/" + self.__service
 
     def createRPMStructure(self):
         print  "Create RPM Structure.........................................."
@@ -193,7 +193,8 @@ class CreateRPMPackage:
 
     def getListOfFilesInService(self,buildRootServicePath):
         for (path,dir,files)in os.walk(buildRootServicePath):
-			self.__fileList.append("%dir " + dir)
+             dirEntry = "%dir " + path
+             self.__fileList.append(dirEntry)
              for file in files:
                  absFilePath = path  + "/" + file
                  if not self.checkConfigFile(file): 
