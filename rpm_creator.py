@@ -128,7 +128,7 @@ class CreateRPMPackage:
                 os.system("mkdir -p  " + self.__buildRootServicePath)
 
 		#makes log directory
-		#os.system("mkdir -p " +  self.__buildRoot + self.getLogPath())
+		os.system("mkdir -p " +  self.__buildRoot + self.getLogPath())
 
         print "Copy sources from "+self.__serviceDirPath +" to "+self.__buildRootServicePath 
         os.system("cp -rf   " + self.__serviceDirPath + "/*  " + self.__buildRootServicePath) 
@@ -193,6 +193,7 @@ class CreateRPMPackage:
 
     def getListOfFilesInService(self,buildRootServicePath):
         for (path,dir,files)in os.walk(buildRootServicePath):
+			self.__fileList.append("%dir " + dir)
              for file in files:
                  absFilePath = path  + "/" + file
                  if not self.checkConfigFile(file): 
