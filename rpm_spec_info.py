@@ -147,7 +147,7 @@ class CreateSpecInformation:
     def setFileSection(self):
 	fileSectionPreamble = """
 %files
-%defattr(644,psrunner,psunixusers,755)		
+%defattr(644,psuser,psunixusers,755)		
 """
         self.__fileSection = fileSectionPreamble  
         for dir in self.__dirList:
