@@ -34,6 +34,7 @@ class CreateRPMPackage:
         self.__buildRootServicePath = ""
         self.__buildRootConfPath = ""
         self.__fileList = []
+        self.__dirList	= []
 
 	self.__buildRoot = self.getRPMRoot() + "/BUILDROOT"
         self.validateBaseDirectory(BASE_DIR)
@@ -147,7 +148,7 @@ class CreateRPMPackage:
         self.getListOfFilesInService(self.__buildRootServicePath)
         self.__createSpecInfoObj = CreateSpecInformation(self.__service,self.__majorRev,\
         self.__minorRev,self.__rpmType,self.__baseDir,self.__buildRoot,\
-        self.getRPMRoot(),self.__srcDir,self.__confDir, self.__configFileList , self.__fileList)
+        self.getRPMRoot(),self.__srcDir,self.__confDir, self.__configFileList , self.__fileList, self.__dirList)
 
         self.__specFile = self.getRPMRoot() + "/SPECS/" + self.getSpecFileName() + ".spec" 
 
@@ -193,7 +194,7 @@ class CreateRPMPackage:
 
     def getListOfFilesInService(self,buildRootServicePath):
         for (path,dir,files)in os.walk(buildRootServicePath):
-			self.__fileList.append("%dir " + dir)
+             self.__dirList.append(path)
              for file in files:
                  absFilePath = path  + "/" + file
                  if not self.checkConfigFile(file): 

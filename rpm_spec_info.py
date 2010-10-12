@@ -6,7 +6,7 @@ from rpm_header import *
 
 class CreateSpecInformation:
     def __init__(self , service , majorRevision , minorRevision , rpmType , \
-                  baseDir , buildRoot , buildDir , sourceDir , confDir , configFileList , fileList):
+                  baseDir , buildRoot , buildDir , sourceDir , confDir , configFileList , fileList, dirList):
         self.__baseDir          = baseDir
         self.__buildDir         = buildDir
         self.__sourceDir        = sourceDir
@@ -39,6 +39,7 @@ class CreateSpecInformation:
         self.__rpmType          = rpmType
         self.__configFileList   = configFileList
         self.__fileList         = fileList
+        self.__dirList			= dirList
         self.setPreambleSection()
         self.setDescription()
         self.setPrepSection()
@@ -149,7 +150,10 @@ class CreateSpecInformation:
 %defattr(644,psrunner,psunixusers,755)		
 """
         self.__fileSection = fileSectionPreamble  
-	
+        for dir in self.__dirList:
+            strlen = len(self.__buildRoot)
+            self.__fileSection = self.__fileSection + "%dir " dir[strlen:]+ "\n"
+            
         for file in self.__fileList:
             strlen = len(self.__buildRoot)
             self.__fileSection = self.__fileSection +  file[strlen:]+ "\n"
