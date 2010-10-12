@@ -152,7 +152,7 @@ class CreateSpecInformation:
         self.__fileSection = fileSectionPreamble  
         for dir in self.__dirList:
             strlen = len(self.__buildRoot)
-            self.__fileSection = self.__fileSection + "%dir " dir[strlen:]+ "\n"
+            self.__fileSection = self.__fileSection + "%dir " + dir[strlen:]+ "\n"
             
         for file in self.__fileList:
             strlen = len(self.__buildRoot)
