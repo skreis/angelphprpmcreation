@@ -100,7 +100,7 @@ class CreateRPMPackage:
         retun self.__buildRoot + self.__baseDir
 
     def getLogPath(self):
-	return "/var/log/angel/" + self.__service
+	return "/var/log/angel/csphp-" + self.__service
 
     def createRPMStructure(self):
         print  "Create RPM Structure.........................................."
