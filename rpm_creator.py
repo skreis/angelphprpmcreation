@@ -100,7 +100,7 @@ class CreateRPMPackage:
         return self.__buildRoot + self.__baseDir
 
     def getLogPath(self):
-	return "/var/log/angel/csphp-" + self.__service
+	return "/var/log/angel/psphp-" + self.__service
 
     def createRPMStructure(self):
         print  "Create RPM Structure.........................................."
@@ -151,7 +151,8 @@ class CreateRPMPackage:
         self.getListOfFilesInService(self.__buildRoot)
         self.__createSpecInfoObj = CreateSpecInformation(self.__service,self.__majorRev,\
         self.__minorRev,self.__rpmType,self.__baseDir,self.__buildRoot,\
-        self.getRPMRoot(),self.__srcDir,self.__confDir, self.__configFileList , self.__fileList, self.__dirList)
+        self.getRPMRoot(),self.__srcDir,self.__confDir, self.__configFileList , \
+			 self.__fileList, self.__dirList, self)
 
         self.__specFile = self.getRPMRoot() + "/SPECS/" + self.getSpecFileName() + ".spec" 
 
