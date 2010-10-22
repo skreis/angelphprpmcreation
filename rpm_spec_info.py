@@ -41,7 +41,7 @@ class CreateSpecInformation:
         self.__configFileList   = configFileList
         self.__fileList         = fileList
         self.__dirList			= dirList
-		self.__rpmCreator		= rpmCreator
+        self.__rpmCreator	= rpmCreator
         self.setPreambleSection()
         self.setDescription()
         self.setPrepSection()
@@ -61,8 +61,8 @@ class CreateSpecInformation:
     def getSummary(self):
         return "angel-" + self.__service + "-" + self.__rpmType
 
-	def getRpmCreator(self):
-		return __rpmCreator
+    def getRpmCreator(self):
+	return self.__rpmCreator
 
     def setPreambleSection(self):
         self.__preambleSection = "%define base_dir  " + self.__baseDir + "\n"  \
@@ -157,11 +157,10 @@ class CreateSpecInformation:
         self.__fileSection = fileSectionPreamble  
         for dir in self.__dirList:
             strlen = len(self.__buildRoot)
-			attrs = ""
-			relativeDir = dir[strlen:]
-			if(relativeDir == self.getRpmCreator().getLogPath())
-				attrs = "%attr(755,apache,apache)"
-			if(dir != )
+            attrs = ""
+            relativeDir = dir[strlen:]
+            if relativeDir == self.getRpmCreator().getLogPath():
+               attrs = "%attr(755,apache,apache) "
             self.__fileSection = self.__fileSection + "%dir " + attrs + relativeDir + "\n"
             
         for file in self.__fileList:
