@@ -27,7 +27,7 @@ Base of php
 
 
 %files
-%defattr(644,psrunner,psunixusers,755)
+%defattr(644,%{psrunner_user},%{psrunner_group},755)
 %dir  /usr/local/angel.com/psphp
 %dir  /usr/local/angel.com/psphpconfig
 %dir /var/log/angel
