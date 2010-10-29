@@ -1,7 +1,7 @@
 %define base_dir /usr/local/angel.com
 Name: angel_ps_php_base
 Version: 2
-Release: 8
+Release: 12
 Summary: Angel Pro Service PHP Base
 License: 2010, Angel.com
 Distribution: Angel System Config
@@ -42,6 +42,8 @@ fi
 
 %postun
 if [ "$1" = "0" ] ; then  # no versions of this rpm should exist any more, normally this is called also when doing an upgrade
-	grep -q ^%{psrunner_user}: /etc/passwd && /usr/sbin/userdel %{psrunner_user}
-	grep -q ^%{psrunner_group}: /etc/group && /usr/sbin/groupdel %{psrunner_group}
+     echo "I'd delete the psuser and group, but it's just too complex to get right.  Sorry"
+#     We really should cleanup the
+#      	grep -q ^%{psrunner_group}: /etc/group && /usr/sbin/groupdel %{psrunner_group}
+#	grep -q ^%{psrunner_user}: /etc/passwd && /usr/sbin/userdel %{psrunner_user}
 fi
