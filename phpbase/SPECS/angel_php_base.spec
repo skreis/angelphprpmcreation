@@ -34,9 +34,14 @@ Base of php
 /etc/httpd/conf.d/ps.conf
 
 %pre
-grep -q ^%{psrunner_group}: /etc/group || /usr/sbin/groupadd -g %{psrunner_gid} -r %{psrunner_group} 2>/dev/null
-grep -q ^%{psrunner_user}: /etc/passwd || /usr/sbin/useradd -d %{psrunner_home} -s /bin/bash -g %{psrunner_group} -u %{psrunner_uid} %{psrunner_user} 2>/dev/null
+if [ "$1" = "1" ] ; then  # If it's the very first version of this package being installed then setup the users, otherwise don't try
+	grep -q ^%{psrunner_group}: /etc/group || /usr/sbin/groupadd -g %{psrunner_gid} -r %{psrunner_group} 2>/dev/null
+	grep -q ^%{psrunner_user}: /etc/passwd || /usr/sbin/useradd -d %{psrunner_home} -s /bin/bash -g %{psrunner_group} -u %{psrunner_uid} %{psrunner_user} 2>/dev/null
+fi
+
 
 %postun
-grep -q ^%{psrunner_user}: /etc/passwd && /usr/sbin/userdel %{psrunner_user}
-grep -q ^%{psrunner_group}: /etc/group && /usr/sbin/groupdel %{psrunner_group}
+if [ "$1" = "0" ] ; then  # no versions of this rpm should exist any more, normally this is called also when doing an upgrade
+	grep -q ^%{psrunner_user}: /etc/passwd && /usr/sbin/userdel %{psrunner_user}
+	grep -q ^%{psrunner_group}: /etc/group && /usr/sbin/groupdel %{psrunner_group}
+fi
