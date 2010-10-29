@@ -73,7 +73,7 @@ class CreateSpecInformation:
         + "Release:" + self.__release + "\n" \
         + "Summary:" + self.getSummary() + "\n" \
         + "License:" + self.__license + "\n" \
-		+ "Requires: angel_ps_php_base\n" +	 
+        + "Requires: angel_ps_php_base\n"  \
         + "Distribution:" + self.__distribution + "\n" \
         + "Group:" + self.__group + "\n" \
         + "autoprov:" + self.__autoprov + "\n" \
