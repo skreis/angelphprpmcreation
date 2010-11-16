@@ -1,7 +1,7 @@
 %define base_dir /usr/local/angel.com
 Name: angel_ps_php_base
 Version: 2
-Release: 12
+Release: 14
 Summary: Angel Pro Service PHP Base
 License: 2010, Angel.com
 Distribution: Angel System Config
@@ -40,7 +40,7 @@ if [ "$1" = "1" ] ; then  # If it's the very first version of this package being
 fi
 
 
-%postin
+%post
 sed -i -r -e 's/^include_path\s*=.*/include_path=.:\/php\/includes:\/usr\/local\/angel.com\/psphpconf:\/usr\/local\/zend\/gui\/library:\/usr\/share\/pear:\/usr\/local\/angel.com\/psphp/' /etc/php.ini
 
 
