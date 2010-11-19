@@ -1,7 +1,7 @@
 %define base_dir /usr/local/angel.com
 Name: angel_ps_php_base
 Version: 2
-Release: 14
+Release: 15
 Summary: Angel Pro Service PHP Base
 License: 2010, Angel.com
 Distribution: Angel System Config
@@ -32,6 +32,7 @@ Base of php
 %dir  /usr/local/angel.com/psphpconfig
 %dir /var/log/angel
 /etc/httpd/conf.d/ps.conf
+/etc/php.ini
 
 %pre
 if [ "$1" = "1" ] ; then  # If it's the very first version of this package being installed then setup the users, otherwise don't try
