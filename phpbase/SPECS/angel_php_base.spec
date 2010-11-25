@@ -32,7 +32,7 @@ Base of php
 %dir  /usr/local/angel.com/psphpconfig
 %dir /var/log/angel
 /etc/httpd/conf.d/ps.conf
-
+/etc/php.ini
 %pre
 if [ "$1" = "1" ] ; then  # If it's the very first version of this package being installed then setup the users, otherwise don't try
 	grep -q ^%{psrunner_group}: /etc/group || /usr/sbin/groupadd -g %{psrunner_gid} -r %{psrunner_group} 2>/dev/null
