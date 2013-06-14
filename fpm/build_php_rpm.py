@@ -88,6 +88,7 @@ def main(argv):
 
     # build fpm command
     fpm_command = "fpm -p '%s' "\
+                 "-a all "\
                  "-t rpm "\
                  "-s dir "\
                  "--name '%s' "\
@@ -103,7 +104,7 @@ def main(argv):
     os.system('cd %s; %s' % ( temp_path, fpm_command))
 
     # construct rpm name
-    rpm_name = '%s-%s-%s.x86_64.rpm' % (angel_package_name, major_version, minor_version)
+    rpm_name = '%s-%s-%s.noarch.rpm' % (angel_package_name, major_version, minor_version)
     print 'RPM name = %s' % rpm_name
 
     # copy rpm to repo
